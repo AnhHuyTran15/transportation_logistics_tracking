@@ -1,70 +1,125 @@
-# Transportation & Logistics Tracking — Analytics Platform
+# Transportation & Logistics Tracking Analytics Platform
 
-Enterprise-grade analytics for the **Transportation & Logistics Tracking Dataset**, including a full Jupyter analysis notebook, reusable Python pipelines, SQL schema, and architecture documentation.
+Enterprise-scale logistics analytics project focused on shipment tracking, operational diagnostics, ETA prediction, supplier performance evaluation, and transportation efficiency analysis using GPS logistics data.
 
-## Quick Start
+This project combines logistics operations analysis, machine learning, and analytics engineering to identify the real operational causes behind poor delivery performance rather than relying on simple KPI reporting.
 
-```bash
-pip install -r requirements.txt
-jupyter lab notebooks/logistics_analytics_tracking.ipynb
-```
+---
 
-Place the Excel file in the project root (already included):
+# Business Problem
 
-`Transportation & Logistics Tracking Dataset.xlsx`
+The transportation operation showed severe delivery performance issues:
 
-## What’s Included
+- Only ~38.5% of shipments were delivered on time
+- Average delivery delay was comparable to actual transportation time
+- GPS tracking data quality was inconsistent
+- Long-haul shipment performance was highly unstable
+- Supplier performance varied significantly across route types
 
-| Asset | Description |
-|-------|-------------|
-| [`notebooks/logistics_analytics_tracking.ipynb`](notebooks/logistics_analytics_tracking.ipynb) | Main analysis — EDA, KPIs, RCA, ML, visuals |
-| [`src/`](src/) | Cleaning, features, GPS, analytics, ML modules |
-| [`sql/schema.sql`](sql/schema.sql) | PostgreSQL/Timescale schema |
-| [`docs/`](docs/) | Architecture, API, ERD, dashboards, deployment, phases |
+The project aims to diagnose operational bottlenecks and generate actionable logistics recommendations using analytics and machine learning.
 
-## Key Findings (from automated run)
+---
 
-- **3,582 bookings** (Apr 2019 – Dec 2020)
-- **38.5% on-time rate** (matches Power BI ~38.52%)
-- **Snapshot GPS** (~1 ping/booking) — continuous tracking needed for idle/moving analytics
-- **Primary delay drivers** (multivariate): wait time, route detour, distance band — not distance alone
+# Business Objectives
 
-## Regenerate Notebook
+- Improve on-time delivery performance
+- Identify operational causes of shipment delays
+- Detect supplier capability mismatches
+- Analyze long-haul transportation efficiency
+- Support logistics KPI governance
+- Build ETA prediction models
+- Detect shipment risk and route anomalies
+- Create scalable logistics analytics workflows
 
-```bash
-python scripts/build_notebook.py
-```
+---
 
-## ML Models (notebook section 13)
+# Key Operational Insights
 
-- ETA (trip days) — Gradient Boosting
-- Delay classification — LightGBM / RandomForest
-- Shipment risk score (0–100)
-- Route anomaly detection — IsolationForest
-- Monthly volume forecast — exponential smoothing
+## 1. Distance Alone Does Not Explain Delays
 
-## Publish to GitHub
+Initial analysis showed a correlation between transportation distance and delivery delays. However, deeper diagnostics revealed that delays were also heavily influenced by:
 
-The repo is initialized locally on branch `main`. One-time login, then publish:
+- Vehicle type constraints
+- Loading and unloading wait time
+- Route complexity
+- Supplier specialization
+- Operational idle time
+- Long-haul transportation handling
 
-```powershell
-gh auth login
-cd "c:\Users\Huypz\OneDrive\Documents\Logistics"
-.\scripts\publish_github.ps1
-```
+The project therefore focuses on operational causation rather than naive KPI correlation.
 
-Or create the repo on [github.com/new](https://github.com/new), then:
+---
 
-```powershell
-git remote add origin https://github.com/YOUR_USERNAME/logistics-analytics-tracking.git
-git push -u origin main
-```
+## 2. Supplier Performance Must Be Segmented
 
-## Documentation Index
+Supplier performance cannot be evaluated using overall averages alone.
 
-- [Architecture](docs/ARCHITECTURE.md)
-- [Database ERD](docs/DATABASE_ERD.md)
-- [API Spec](docs/API_SPEC.md)
-- [Dashboards](docs/DASHBOARDS.md)
-- [Implementation Phases](docs/IMPLEMENTATION_PHASES.md)
-- [Deployment](docs/DEPLOYMENT.md)
+The analysis recommends evaluating suppliers based on:
+- Route type
+- Distance segment
+- Vehicle specialization
+- Shipment complexity
+- Delay severity
+- Transportation cost efficiency
+
+This avoids unfairly penalizing suppliers operating more difficult long-haul or containerized routes.
+
+---
+
+## 3. Waiting Time Is a Major Bottleneck
+
+Shipment delays were often driven more by:
+- dispatch waiting,
+- warehouse handling,
+- loading/unloading processes
+
+than by actual vehicle movement.
+
+This significantly changes how ETA and logistics KPIs should be interpreted.
+
+---
+
+# Dataset Overview
+
+The project uses a transportation and logistics tracking dataset containing:
+
+- GPS shipment tracking data
+- Vehicle movement information
+- ETA timestamps
+- Supplier and customer details
+- Transportation distance metrics
+- Shipment lifecycle records
+
+### Core Fields
+
+- BookingID
+- Shipment Type
+- Vehicle Registration
+- Origin / Destination
+- GPS Coordinates
+- Planned ETA
+- Actual ETA
+- Transportation Distance
+- Vehicle Type
+- Driver Information
+- Supplier / Customer
+- Trip Start / End Time
+
+---
+
+# Project Architecture
+
+```text
+Excel Dataset
+      ↓
+Data Cleaning Pipeline
+      ↓
+Feature Engineering
+      ↓
+Operational Analytics
+      ↓
+Machine Learning Models
+      ↓
+Dashboard & KPI Layer
+      ↓
+Business Recommendations
